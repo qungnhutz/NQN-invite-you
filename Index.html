@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thư Mời Lễ Tốt Nghiệp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #ffcccc 0%, #ff6666 100%);
+            color: #333;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .name-form-container {
+            background: #fff;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .name-form-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #8b0000;
+            margin-bottom: 20px;
+        }
+
+        .name-form-container input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #8b0000;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .name-form-container input:focus {
+            border-color: #a11212;
+        }
+
+        .name-form-container button {
+            padding: 15px 30px;
+            background: #8b0000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .name-form-container button:hover {
+            background: #a11212;
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe6e6 50%, #ffcccc 100%);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border: 1px solid transparent;
+            animation: fadeIn 1.2s ease-in;
+            display: none;
+        }
+
+        .header {
+            background: url('../invite/banner.png') no-repeat center;
+            background-size: cover;
+            height: 350px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            background-attachment: fixed;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(139, 0, 0, 0.7);
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            position: relative;
+            animation: slideIn 1.2s ease-out;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .photo-slider {
+            text-align: center;
+            margin: 30px 0;
+            transform: translateY(-30px);
+            position: relative;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow: hidden;
+        }
+
+        .slider-container {
+            display: flex;
+            flex-direction: row;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slider-item {
+            flex: 0 0 300px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-100%);
+        }
+
+        .slider-nav button {
+            background: rgba(139, 0, 0, 0.7);
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            padding: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .slider-nav button:hover {
+            background: #8b0000;
+        }
+
+        .content {
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #8b0000;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            line-height: 1.9;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .guest-name {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #8b0000;
+            opacity: 0.7;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .countdown {
+            margin: 30px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 204, 204, 0.7));
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .countdown h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: #8b0000;
+            margin-bottom: 25px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+       .countdown-timer div {
+    background: #ffffff;
+    padding: 20px 15px;
+    border-radius: 10px;
+    min-width: 90px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+        .countdown-timer div:hover {
+            transform: translateY(-5px);
+        }
+
+        .countdown-timer span {
+            font-family: 'Roboto', sans-serif;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #8b0000;
+            display: block;
+            animation: flip 0.5s ease-in-out;
+        }
+
+        .countdown-timer div::after {
+            content: attr(data-label);
+            font-size: 1rem;
+            color: #555;
+            text-transform: uppercase;
+            margin-top: 5px;
+            display: block;
+        }
+
+        @keyframes flip {
+            0% { transform: rotateX(90deg); opacity: 0; }
+            100% { transform: rotateX(0); opacity: 1; }
+        }
+
+        .details {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+
+        .detail-item {
+            flex: 1;
+            min-width: 220px;
+            margin: 15px;
+            padding: 25px;
+            background: #fff5f5;
+            border-radius: 15px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .detail-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .detail-item i {
+            font-size: 2rem;
+            color: #8b0000;
+            margin-bottom: 15px;
+        }
+
+        .detail-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7rem;
+            color: #8b0000;
+            margin-bottom: 12px;
+        }
+
+        .detail-item p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .rsvp-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: #8b0000;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.3rem;
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .rsvp-button:hover {
+            background: #a11212;
+            transform: scale(1.08);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .rsvp-button i {
+            margin-right: 10px;
+        }
+
+        .footer {
+            background: #8b0000;
+            color: #fff;
+            text-align: center;
+            padding: 25px;
+            font-size: 1rem;
+        }
+
+        .footer i {
+            margin-right: 8px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            .name-form-container {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .content h2 {
+                font-size: 1.8rem;
+            }
+
+            .guest-name {
+                font-size: 2rem;
+            }
+
+            .photo-slider {
+                max-width: 250px;
+                overflow: hidden;
+            }
+
+            .slider-container {
+                width: 100%;
+            }
+
+            .slider-item {
+                flex: 0 0 250px;
+                height: 350px;
+            }
+
+            .countdown {
+                padding: 20px;
+            }
+
+            .countdown h3 {
+                font-size: 1.8rem;
+            }
+
+            .countdown-timer {
+                flex-direction: row;
+                flex-wrap: nowrap;
+                gap: 10px;
+            }
+
+            .countdown-timer div {
+                min-width: 60px;
+                padding: 10px 8px;
+            }
+
+            .countdown-timer span {
+                font-size: 1.4rem;
+            }
+
+            .countdown-timer div::after {
+                font-size: 0.8rem;
+                margin-top: 3px;
+            }
+
+            .details {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="name-form-container" id="nameForm">
+        <h2>ĐIỀN TÊN CỦA CẬU VÔ ĐÂY ĐI</h2>
+        <input type="text" id="guestName" placeholder="Nhập tên của bạn vô đây điii" required>
+        <button onclick="submitName()">Xác nhận</button>
+    </div>
+
+    <div class="container" id="invitation">
+        <div class="header">
+            <h1>Lễ Tốt Nghiệp Của QUANG NHẬT</h1>
+        </div>
+        <div class="content">
+            <div class="photo-slider">
+                <div class="slider-container" id="sliderContainer">
+                    <img class="slider-item" src="../invite/nhat1.jpg" alt="Ảnh tốt nghiệp 1">
+                    <img class="slider-item" src="../invite/nhat2.jpg" alt="Ảnh tốt nghiệp 2">
+                    <img class="slider-item" src="../invite/nhat3.jpg" alt="Ảnh tốt nghiệp 3">
+                </div>
+                <div class="slider-nav">
+                    <button onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
+                    <button onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            <h2>Thư Mời Tham Dự Lễ Tốt Nghiệp</h2>
+            <p>Kính gửi: <span id="displayName" class="guest-name">[Tên khách mời]</span>,</p>
+            <p>Rất vinh dự được mời bạn đến tham dự buổi lễ tốt nghiệp của <strong>Nguyễn Quang Nhật</strong>, sự hiện diện của bạn là niềm vui lớn đối với mình. Đây là cột mốc quan trọng đánh dấu hành trình trưởng thành của mình, mong cậu tới tham dự để chúng mình cùng lưu lại những những khoảnh khắc đẹp nhất nhé.</p>
+            
+            <div class="countdown">
+                <h3>CÒN</h3>
+                <div class="countdown-timer" id="countdown">
+                    <div data-label="NGÀY"><span id="days">0</span></div>
+                    <div data-label="GIỜ"><span id="hours">0</span></div>
+                    <div data-label="PHÚT"><span id="minutes">0</span></div>
+                    <div data-label="GIÂY"><span id="seconds">0</span></div>
+                </div>
+            </div>
+            
+            <div class="details">
+                <div class="detail-item">
+                    <i class="fas fa-clock"></i>
+                    <h3>Thời gian</h3>
+                    <p>8:00 sáng, Chủ nhật<br>22 tháng 6, 2025</p>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Địa điểm</h3>
+                    <p>Hội trường lớn<br>Đại học Kinh Tế - Kỹ Thuật Công Nghiệp<br>218 Lĩnh Nam, Hoàng Mai, Hà Nội</p>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-tshirt"></i>
+                    <h3>Trang phục</h3>
+                    <p>Thật lộng lẫy để chụp ảnh nhé</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <p><i class="fas fa-info-circle"></i>Liên hệ với Nhật. Phone: 0966358705</p>
+        </div>
+    </div>
+
+    <script>
+        // Fireworks effect
+        function launchFireworks() {
+            const duration = 5 * 1000; // 5 seconds
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function () {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+                // Launch from left and right sides
+                confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+                });
+                confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+                });
+            }, 250);
+        }
+
+        // Xử lý form nhập tên
+        function submitName() {
+            const guestName = document.getElementById('guestName').value.trim();
+            if (guestName === '') {
+                alert('Vui lòng nhập tên của bạn!');
+                return;
+            }
+            snoopingTrack = false;
+            document.getElementById('displayName').textContent = guestName;
+            document.getElementById('nameForm').style.display = 'none';
+            document.getElementById('invitation').style.display = 'block';
+            document.body.style.alignItems = 'flex-start';
+            launchFireworks(); // Trigger fireworks effect
+        }
+
+        // Đồng hồ đếm ngược
+        function updateCountdown() {
+            const eventDate = new Date('2025-06-22T08:00:00');
+            const now = new Date();
+            const diff = eventDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('countdown').innerHTML = '<p>Sự kiện đã bắt đầu!</p>';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Slide ảnh ngang
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slider-item');
+        const totalSlides = slides.length;
+
+        function updateSlider() {
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            const offset = -currentSlide * slideWidth;
+            document.getElementById('sliderContainer').style.transform = `translateX(${offset}px)`;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlider();
+        }
+
+        setInterval(nextSlide, 5000);
+
+        window.addEventListener('resize', updateSlider);
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.detail-item, .photo-slider, .countdown').forEach(item => {
+            observer.observe(item);
+        });
+
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .fade-in {
+                animation: fadeIn 0.6s ease-in;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
