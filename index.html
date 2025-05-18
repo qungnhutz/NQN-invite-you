@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thư Mời Lễ Tốt Nghiệp</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&family=Dancing+Script:wght@700&family=Parisienne&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -23,24 +23,53 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            position: relative;
         }
 
         .name-form-container {
-            background: #fff;
-            max-width: 500px;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe6e6 100%);
+            max-width: 600px;
             margin: 50px auto;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
             text-align: center;
+            position: relative;
             animation: fadeIn 1s ease-in;
+            border: 3px solid #8b0000;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .name-form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/diagonal-striped-brick.png');
+            opacity: 0.1;
+            z-index: 0;
         }
 
         .name-form-container h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: #8b0000;
             margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .name-form-container i {
+            font-size: 3rem;
+            color: #8b0000;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            animation: bounce 2s infinite;
         }
 
         .name-form-container input {
@@ -48,30 +77,185 @@
             padding: 15px;
             margin-bottom: 20px;
             border: 2px solid #8b0000;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
             outline: none;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            position: relative;
+            z-index: 1;
         }
 
         .name-form-container input:focus {
             border-color: #a11212;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+            transform: scale(1.02);
+        }
+
+        .name-form-container input::placeholder {
+            color: #999;
+            transition: all 0.3s ease;
+        }
+
+        .name-form-container input:focus::placeholder {
+            opacity: 0;
+            transform: translateY(-10px);
         }
 
         .name-form-container button {
-            padding: 15px 30px;
+            padding: 15px 40px;
             background: #8b0000;
             color: #fff;
             border: none;
-            border-radius: 8px;
-            font-size: 1.2rem;
+            border-radius: 10px;
+            font-size: 1.3rem;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .name-form-container button:hover {
             background: #a11212;
-            transform: scale(1.05);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 2rem;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .emoji:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .emoji:nth-child(2) {
+            top: 20%;
+            right: 15%;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .emoji:nth-child(3) {
+            bottom: 15%;
+            left: 15%;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .emoji:nth-child(4) {
+            bottom: 10%;
+            right: 10%;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .emoji:nth-child(5) {
+            top: 50%;
+            left: 5%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Decorative Icons */
+        .decor-icon {
+            position: absolute;
+            font-size: 3rem;
+            color: #8b0000;
+            z-index: 0;
+            cursor: grab;
+            transition: transform 0.2s ease, color 0.2s ease;
+            user-select: none;
+        }
+
+        .decor-icon:hover, .decor-icon.active {
+            transform: scale(1.3);
+            color: #ff4040;
+        }
+
+        .decor-icon.dragging {
+            cursor: grabbing;
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        @keyframes flip {
+            0%, 100% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg); }
+        }
+
+        @keyframes ring {
+            0%, 100% { transform: rotate(0deg); }
+            10%, 30%, 50%, 70%, 90% { transform: rotate(15deg); }
+            20%, 40%, 60%, 80% { transform: rotate(-15deg); }
+        }
+
+        .graduation-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .graduation-effect.show {
+            display: flex;
+        }
+
+        .graduation-cap {
+            position: absolute;
+            font-size: 3rem;
+            color: #8b0000;
+            animation: fall 3s linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .container {
@@ -84,11 +268,14 @@
             border: 1px solid transparent;
             animation: fadeIn 1.2s ease-in;
             display: none;
+            position: relative;
+            z-index: 1;
         }
 
         .header {
-            background: url('banner.png') no-repeat center;
-            background-size: cover;
+            background: linear-gradient(135deg, #8b0000 0%, #ff4040 100%);
+            background-image: url('https://www.transparenttextures.com/patterns/subtle-white-feathers.png');
+            background-blend-mode: overlay;
             height: 350px;
             position: relative;
             display: flex;
@@ -97,7 +284,6 @@
             color: #fff;
             text-align: center;
             padding: 20px;
-            background-attachment: fixed;
         }
 
         .header::before {
@@ -107,15 +293,28 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(139, 0, 0, 0.7);
+            background: rgba(139, 0, 0, 0.5);
         }
 
         .header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
             position: relative;
             animation: slideIn 1.2s ease-out;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            line-height: 1.3;
+        }
+
+        .header h1 span:first-child {
+            font-family: 'Parisienne', cursive;
+            font-size: 2.5rem;
+            font-weight: 400;
+        }
+
+        .header h1 span:last-child {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
         }
 
         .photo-slider {
@@ -220,15 +419,15 @@
             flex-wrap: wrap;
         }
 
-       .countdown-timer div {
-    background: #ffffff;
-    padding: 20px 15px;
-    border-radius: 10px;
-    min-width: 90px;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
+        .countdown-timer div {
+            background: #ffffff;
+            padding: 20px 15px;
+            border-radius: 10px;
+            min-width: 90px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
 
         .countdown-timer div:hover {
             transform: translateY(-5px);
@@ -295,6 +494,7 @@
         .detail-item p {
             font-size: 1.1rem;
             color: #666;
+            line-height: 1.6;
         }
 
         .rsvp-button {
@@ -317,6 +517,30 @@
 
         .rsvp-button i {
             margin-right: 10px;
+        }
+
+        .thank-you {
+            margin: 40px 0;
+            padding: 30px;
+            background: #fff5f5;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .thank-you h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #8b0000;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .thank-you p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.9;
         }
 
         .footer {
@@ -344,11 +568,48 @@
         @media (max-width: 600px) {
             .name-form-container {
                 margin: 20px;
-                padding: 20px;
+                padding: 30px;
+            }
+
+            .name-form-container h2 {
+                font-size: 2rem;
+            }
+
+            .name-form-container i {
+                font-size: 2.5rem;
+            }
+
+            .name-form-container input {
+                font-size: 1rem;
+            }
+
+            .name-form-container button {
+                font-size: 1.1rem;
+                padding: 12px 30px;
+            }
+
+            .emoji {
+                font-size: 1.5rem;
+            }
+
+            .decor-icon {
+                font-size: 2rem;
             }
 
             .header h1 {
                 font-size: 2.5rem;
+            }
+
+            .header h1 span:first-child {
+                font-size: 1.8rem;
+            }
+
+            .header h1 span:last-child {
+                font-size: 2.8rem;
+            }
+
+            .content {
+                padding: 30px 20px;
             }
 
             .content h2 {
@@ -403,20 +664,94 @@
 
             .details {
                 flex-direction: column;
+                margin: 20px 0;
+                gap: 10px;
+            }
+
+            .detail-item {
+                min-width: unset;
+                width: 90%;
+                margin: 10px auto;
+                padding: 20px;
+                background: linear-gradient(135deg, #fff5f5 0%, #ffe6e6 100%);
+                border-radius: 12px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .detail-item:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            }
+
+            .detail-item i {
+                font-size: 1.8rem;
+                margin-bottom: 12px;
+            }
+
+            .detail-item h3 {
+                font-size: 1.4rem;
+                margin-bottom: 10px;
+            }
+
+            .detail-item p {
+                font-size: 1rem;
+                line-height: 1.5;
+                color: #555;
+            }
+
+            .thank-you {
+                padding: 20px;
+            }
+
+            .thank-you h3 {
+                font-size: 1.8rem;
+            }
+
+            .thank-you p {
+                font-size: 1.1rem;
+            }
+
+            .container {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
     <div class="name-form-container" id="nameForm">
-        <h2>ĐIỀN TÊN CỦA CẬU VÔ ĐÂY ĐI</h2>
-        <input type="text" id="guestName" placeholder="Nhập tên của bạn vô đây điii" required>
-        <button onclick="submitName()">Xác nhận</button>
+        <i class="fas fa-graduation-cap"></i>
+        <h2>CHÀO MỪNG ĐẾN VỚI LỄ TỐT NGHIỆP!</h2>
+        <input type="text" id="guestName" placeholder="Nhập tên của bạn để nhận thư mời" required>
+        <button onclick="submitName()">Xác Nhận Thư Mời</button>
+        <span class="emoji">🎓</span>
+        <span class="emoji">🎉</span>
+        <span class="emoji">⭐</span>
+        <span class="emoji">🎈</span>
+        <span class="emoji">🏆</span>
     </div>
 
+    <div class="graduation-effect" id="graduationEffect">
+        <!-- Fireworks will be handled via JavaScript -->
+    </div>
+
+    <!-- Decorative Icons -->
+    <i class="fas fa-graduation-cap decor-icon" data-animation="float"></i>
+    <i class="fas fa-ribbon decor-icon" data-animation="spin" style="color: #ff4040;"></i>
+    <i class="fas fa-flag decor-icon" data-animation="wave"></i>
+    <i class="fas fa-balloon decor-icon" data-animation="float" style="color: #ff6666;"></i>
+    <i class="fas fa-trophy decor-icon" data-animation="sparkle" style="color: #ff4040;"></i>
+    <i class="fas fa-flower decor-icon" data-animation="pulse" style="color: #ff6666;"></i>
+    <i class="fas fa-book decor-icon" data-animation="flip"></i>
+    <i class="fas fa-pen decor-icon" data-animation="spin" style="color: #ff4040;"></i>
+    <i class="fas fa-fire-alt decor-icon" data-animation="sparkle"></i>
+    <i class="fas fa-bell decor-icon" data-animation="ring" style="color: #ff6666;"></i>
+    <i class="fas fa-star decor-icon" data-animation="pulse" style="color: #ff4040;"></i>
+
     <div class="container" id="invitation">
+        <audio id="backgroundMusic" src="music.mp3" loop></audio>
         <div class="header">
-            <h1>Lễ Tốt Nghiệp Của QUANG NHẬT</h1>
+            <h1><span>Quang Nhật</span><span>GRADUATION</span></h1>
         </div>
         <div class="content">
             <div class="photo-slider">
@@ -461,6 +796,11 @@
                     <p>Thật lộng lẫy để chụp ảnh nhé</p>
                 </div>
             </div>
+
+            <div class="thank-you">
+                <h3>Lời Cảm Ơn</h3>
+                <p>Cảm ơn bạn đã dành thời gian quý báu để tham dự ngày đặc biệt này. Sự hiện diện của bạn sẽ làm cho buổi lễ tốt nghiệp của mình thêm ý nghĩa và đáng nhớ. Hẹn gặp bạn tại sự kiện nhé!</p>
+            </div>
         </div>
         <div class="footer">
             <p><i class="fas fa-info-circle"></i>Liên hệ với Nhật. Phone: 0966358705</p>
@@ -486,7 +826,6 @@
                 }
 
                 const particleCount = 50 * (timeLeft / duration);
-                // Launch from left and right sides
                 confetti({
                     ...defaults,
                     particleCount,
@@ -500,6 +839,54 @@
             }, 250);
         }
 
+        // Full-screen clustered fireworks effect
+        function triggerGraduationEffect() {
+            const effectContainer = document.getElementById('graduationEffect');
+            effectContainer.classList.add('show');
+
+            const duration = 4000; // 4 seconds
+            const animationEnd = Date.now() + duration;
+            const colors = ['#ff0000', '#ff9900', '#33cc33', '#0066cc', '#990099'];
+
+            function clusteredFireworks() {
+                const timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return;
+
+                confetti({
+                    particleCount: 150,
+                    spread: 60,
+                    startVelocity: 40,
+                    colors: colors,
+                    origin: { x: Math.random() * 0.4 + 0.3, y: Math.random() * 0.4 + 0.3 },
+                    zIndex: 2001
+                });
+                confetti({
+                    particleCount: 100,
+                    spread: 80,
+                    startVelocity: 30,
+                    colors: colors,
+                    origin: { x: Math.random() * 0.4 + 0.3, y: Math.random() * 0.4 + 0.3 },
+                    zIndex: 2001
+                });
+                confetti({
+                    particleCount: 80,
+                    spread: 100,
+                    startVelocity: 20,
+                    colors: colors,
+                    origin: { x: Math.random() * 0.4 + 0.3, y: Math.random() * 0.4 + 0.3 },
+                    zIndex: 2001
+                });
+
+                setTimeout(clusteredFireworks, 500);
+            }
+
+            clusteredFireworks();
+
+            setTimeout(() => {
+                effectContainer.classList.remove('show');
+            }, duration);
+        }
+
         // Xử lý form nhập tên
         function submitName() {
             const guestName = document.getElementById('guestName').value.trim();
@@ -507,12 +894,18 @@
                 alert('Vui lòng nhập tên của bạn!');
                 return;
             }
-            snoopingTrack = false;
             document.getElementById('displayName').textContent = guestName;
             document.getElementById('nameForm').style.display = 'none';
-            document.getElementById('invitation').style.display = 'block';
-            document.body.style.alignItems = 'flex-start';
-            launchFireworks(); // Trigger fireworks effect
+            triggerGraduationEffect();
+            setTimeout(() => {
+                document.getElementById('invitation').style.display = 'block';
+                document.body.style.alignItems = 'flex-start';
+                launchFireworks();
+                const audio = document.getElementById('backgroundMusic');
+                audio.play().catch(error => {
+                    console.log('Autoplay prevented:', error);
+                });
+            }, 4000);
         }
 
         // Đồng hồ đếm ngược
@@ -582,7 +975,7 @@
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.detail-item, .photo-slider, .countdown').forEach(item => {
+        document.querySelectorAll('.detail-item, .photo-slider, .countdown, .thank-you').forEach(item => {
             observer.observe(item);
         });
 
@@ -593,6 +986,102 @@
             }
         `;
         document.head.appendChild(style);
+
+        // Icon movement and interaction
+        const icons = document.querySelectorAll('.decor-icon');
+        const boundaryPadding = 20; // Padding to keep icons within screen
+
+        icons.forEach(icon => {
+            let posX = Math.random() * (window.innerWidth - 2 * boundaryPadding) + boundaryPadding;
+            let posY = Math.random() * (window.innerHeight - 2 * boundaryPadding) + boundaryPadding;
+            let velX = (Math.random() - 0.5) * 4; // Speed between -2 and 2
+            let velY = (Math.random() - 0.5) * 4;
+            let isDragging = false;
+            let animationFrame;
+
+            icon.style.left = `${posX}px`;
+            icon.style.top = `${posY}px`;
+
+            // Apply specific animation
+            const animationType = icon.dataset.animation;
+            icon.style.animation = `${animationType} ${3 + Math.random() * 4}s ease-in-out infinite`;
+
+            function moveIcon() {
+                if (!isDragging) {
+                    posX += velX;
+                    posY += velY;
+
+                    // Bounce off screen edges
+                    if (posX <= boundaryPadding || posX >= window.innerWidth - boundaryPadding - icon.offsetWidth) {
+                        velX = -velX;
+                        posX = Math.max(boundaryPadding, Math.min(posX, window.innerWidth - boundaryPadding - icon.offsetWidth));
+                    }
+                    if (posY <= boundaryPadding || posY >= window.innerHeight - boundaryPadding - icon.offsetHeight) {
+                        velY = -velY;
+                        posY = Math.max(boundaryPadding, Math.min(posY, window.innerHeight - boundaryPadding - icon.offsetHeight));
+                    }
+
+                    icon.style.left = `${posX}px`;
+                    icon.style.top = `${posY}px`;
+                }
+
+                animationFrame = requestAnimationFrame(moveIcon);
+            }
+
+            moveIcon();
+
+            // Mouse interaction
+            icon.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                icon.classList.add('dragging');
+                cancelAnimationFrame(animationFrame);
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    posX = e.clientX - icon.offsetWidth / 2;
+                    posY = e.clientY - icon.offsetHeight / 2;
+                    icon.style.left = `${posX}px`;
+                    icon.style.top = `${posY}px`;
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    icon.classList.remove('dragging');
+                    velX = (Math.random() - 0.5) * 4;
+                    velY = (Math.random() - 0.5) * 4;
+                    moveIcon();
+                }
+            });
+
+            // Hover effect
+            icon.addEventListener('mouseenter', () => {
+                if (!isDragging) {
+                    icon.classList.add('active');
+                }
+            });
+
+            icon.addEventListener('mouseleave', () => {
+                icon.classList.remove('active');
+            });
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            icons.forEach(icon => {
+                let posX = parseFloat(icon.style.left);
+                let posY = parseFloat(icon.style.top);
+                posX = Math.min(posX, window.innerWidth - boundaryPadding - icon.offsetWidth);
+                posY = Math.min(posY, window.innerHeight - boundaryPadding - icon.offsetHeight);
+                posX = Math.max(boundaryPadding, posX);
+                posY = Math.max(boundaryPadding, posY);
+                icon.style.left = `${posX}px`;
+                icon.style.top = `${posY}px`;
+            });
+        });
     </script>
 </body>
 </html>
